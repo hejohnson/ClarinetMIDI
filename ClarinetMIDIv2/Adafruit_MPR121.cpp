@@ -63,7 +63,7 @@ boolean Adafruit_MPR121::begin(uint8_t i2caddr) {
 
   writeRegister(MPR121_UPLIMIT, 150);
   writeRegister(MPR121_TARGETLIMIT, 100); // should be ~400 (100 shifted)
-  writeRegister(MPR121_LOWLIMIT, 50);
+  writeRegister(MPR121_LOWLIMIT, 80);
   // enable all electrodes
   writeRegister(MPR121_ECR, 0x8F);  // start with first 5 bits of baseline tracking
 
