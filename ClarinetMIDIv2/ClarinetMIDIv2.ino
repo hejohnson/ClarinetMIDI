@@ -37,7 +37,7 @@ uint32_t genKeyMask(int8_t* key) {
     if (key[i] == -1) {
       continue;
     } else {
-      blankMask |= (1<<key[i]);
+      blankMask |= (1L<<key[i]);
     }
   }
   return blankMask;
@@ -166,9 +166,9 @@ void loop() {
       noteOffSent = true;
     }
     #endif
-    currentMIDINote = 0;
+    //currentMIDINote = 0;
   } else {
-      noteOffSent = false;
+      //noteOffSent = false;
 //    if (lastTouched != currTouched) {
 //      #ifdef USESERIAL
 //      Serial.println(currTouched, BIN);
@@ -181,10 +181,13 @@ void loop() {
           Serial.println(" off");
           #else
 
-          newMIDINote = noteLookupTable[i].midiNote; // figure out the matching MIDI note ID
+          newMIDINote = noteLookupTable[i].midiNote+24; // figure out the matching MIDI note ID
 
-          if (newMIDINote != currentMIDINote) { // If its a different note, stop sending the current note and send the new one
-            usbMIDI.sendNoteOff(currentMIDINote, 0, channel); // stop sending the last note
+          if (newMIDINote != currentMIDINote || noteOffSent) { // If its a different note, stop sending the current note and send the new one
+            noteOffSent = false;
+            if (newMIDINote != currentMIDINote) {
+              usbMIDI.sendNoteOff(currentMIDINote, 0, channel); // stop sending the last note
+            }
             #endif
             currentMIDINote = newMIDINote;
             #ifdef USESERIAL
