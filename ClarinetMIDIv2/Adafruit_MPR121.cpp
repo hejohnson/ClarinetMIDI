@@ -56,7 +56,7 @@ boolean Adafruit_MPR121::begin(uint8_t i2caddr) {
   writeRegister(MPR121_FDLT, 0x00);
 
   writeRegister(MPR121_DEBOUNCE, 0);
-  writeRegister(MPR121_CONFIG1, 0x10); // default, 16uA charge current
+  writeRegister(MPR121_CONFIG1, 0x3F); // 63uA charge current
   writeRegister(MPR121_CONFIG2, 0x20); // 0.5uS encoding, 1ms period
 
   writeRegister(MPR121_AUTOCONFIG0, 0x8F);
