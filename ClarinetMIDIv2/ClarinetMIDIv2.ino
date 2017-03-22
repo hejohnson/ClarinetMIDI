@@ -4,6 +4,9 @@
 #define NUM_NOTES 43
 #define BREATHSENSEPIN 10
 
+#define BREATHRESTING_CUTOFF 100
+#define BREATHMAX 255
+
 //#define USESERIAL
 
 Adafruit_MPR121 buttons1 = Adafruit_MPR121();
@@ -112,7 +115,7 @@ void loop() {
 
   currTouched = (uint32_t)currTouched_buttons1 + ((uint32_t)currTouched_buttons2 << 12);
   
-  if (analogRead(BREATHSENSEPIN) < 100) {
+  if (analogRead(BREATHSENSEPIN) < BREATHRESTING_CUTOFF) {
     if (!noteOffSent) {
       usbMIDI.sendNoteOff(currentMIDINote, 0, channel); // if you're not blowing, stop sending the note
       noteOffSent = true;
@@ -129,7 +132,7 @@ void loop() {
               usbMIDI.sendNoteOff(currentMIDINote, 0, channel); // stop sending the last note
             }
             currentMIDINote = newMIDINote;
-            usbMIDI.sendNoteOn(currentMIDINote, 99, channel); // send the new note
+            usbMIDI.sendNoteOn(currentMIDINote, map(analogRead(BREATHSENSEPIN), BREATHRESTING_CUTOFF, BREATHMAX, 0, 99), channel); // send the new note
           }
           break; // stop looking for notes
         }
