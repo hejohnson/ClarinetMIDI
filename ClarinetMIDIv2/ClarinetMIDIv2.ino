@@ -5,7 +5,7 @@
 #define BREATHSENSEPIN 10
 
 #define BREATHRESTING_CUTOFF 55
-#define BREATHMAX 512
+#define BREATHMAX 500
 
 //#define USESERIAL
 
@@ -132,7 +132,7 @@ void loop() {
               usbMIDI.sendNoteOff(currentMIDINote, 0, channel); // stop sending the last note
             }
             currentMIDINote = newMIDINote;
-            usbMIDI.sendNoteOn(currentMIDINote, map(analogRead(BREATHSENSEPIN), BREATHRESTING_CUTOFF, BREATHMAX, 0, 99), channel); // send the new note
+            usbMIDI.sendNoteOn(currentMIDINote, constrain(map(analogRead(BREATHSENSEPIN), BREATHRESTING_CUTOFF, BREATHMAX, 0, 99), 15, 99), channel); // send the new note
           }
           break; // stop looking for notes
         }
